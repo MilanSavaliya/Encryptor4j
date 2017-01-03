@@ -13,7 +13,7 @@ It handles initialization vectors (IVs) transparently by securely generating and
 Encrypting a message using AES in CBC mode is as simple as this:
 ```java
 String message = "This string has been encrypted & decrypted using AES in Cipher Block Chaining mode";
-SecretKey secretKey = KeyFactory.AES.randomKey();
+Key secretKey = KeyFactory.AES.randomKey();
 Encryptor encryptor = new Encryptor(secretKey, "AES/CBC/PKCS5Padding", 16);
 byte[] encrypted = encryptor.encrypt(message.getBytes());
 ```
@@ -21,7 +21,7 @@ byte[] encrypted = encryptor.encrypt(message.getBytes());
 Using AES in GCM mode needs an additional *tLen* value in the constructor:
 ```java
 String message = "This string has been encrypted & decrypted using AES in Galois Counter Mode";
-SecretKey secretKey = KeyFactory.AES.randomKey();
+Key secretKey = KeyFactory.AES.randomKey();
 Encryptor encryptor = new Encryptor(secretKey, "AES/GCM/NoPadding", 16, 128);
 byte[] encrypted = encryptor.encrypt(message.getBytes());
 ```
@@ -41,7 +41,7 @@ The *Encryptor* will prepend the IV transparently and use the cipher that it has
 
 The following example reads a file and writes it to another file using streaming encryption:
 ```java
-SecretKey secretKey = KeyFactory.AES.randomKey();
+Key secretKey = KeyFactory.AES.randomKey();
 Encryptor encryptor = new Encryptor(secretKey, "AES/CTR/NoPadding", 16);
 
 InputStream is = null;
@@ -178,7 +178,7 @@ Setup an *Encryptor* instance with the freshly obtained shared secret:
 
 ```java
 byte[] sharedSecret = peer.computeSharedSecret(publicKey);
-SecretKey secretKey = new SecretKeySpec(sharedSecret, "AES");
+SecretKeySpec secretKey = new SecretKeySpec(sharedSecret, "AES");
 Encryptor encryptor = new Encryptor(secretKey, "AES/CTR/NoPadding", 16);
 ```
 
@@ -188,7 +188,7 @@ This behavior can be overridden by using an explicit IV or by not prepending the
 
 Construct an *Encryptor* instance using an explicit IV:
 ```java
-SecretKey secretKey = KeyFactory.AES.randomKey();
+Key secretKey = KeyFactory.AES.randomKey();
 byte[] iv = new byte[] { 107, 67, 98, -81, 54, -31, -110, -63, 24, 76, -12, -48, -55, 14, 15, 19 };
 Encryptor encryptor = new Encryptor(secretKey, "AES/CBC/PKCS5Padding", iv);
 ```
